@@ -20,7 +20,7 @@ public class PathController {
     // ✅ LOGIN - GET
     @GetMapping("/login")
     public String loginPage() {
-        return "login"; // login.jsp
+        return "views/login"; // login.jsp
     }
 
     // ✅ LOGIN - POST
@@ -34,21 +34,21 @@ public class PathController {
             return "redirect:/"; // Redirect to form
         } else {
             request.setAttribute("error", "Invalid username or password");
-            return "login";
+            return "views/login";
         }
     }
 
     // ✅ SHOW STUDENT FORM
     @GetMapping("/")
     public String showHomeForm() {
-        return "index"; // index.jsp
+        return "views/index"; // index.jsp
     }
 
     // ✅ ADD STUDENT
     @PostMapping("/students/add")
     public String submit(@ModelAttribute PathModel student, Model model) {
         repo.save(student);
-        return "redirect:/students/view"; // redirect to view.jsp
+        return "redirect:/views/students/view"; // redirect to view.jsp
     }
 
     // ✅ VIEW ALL STUDENTS
@@ -56,7 +56,7 @@ public class PathController {
     public String viewStudents(Model model) {
         List<PathModel> students = repo.findAll();
         model.addAttribute("students", students);
-        return "view"; // view.jsp
+        return "views/view"; // view.jsp
     }
 
     // ✅ EDIT STUDENT - SHOW FORM
@@ -65,21 +65,21 @@ public class PathController {
         PathModel student = repo.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid student ID: " + id));
         model.addAttribute("student", student);
-        return "edit"; // edit.jsp
+        return "views/edit"; // edit.jsp
     }
 
     // ✅ UPDATE STUDENT
     @PostMapping("/students/update")
     public String updateStudent(@ModelAttribute PathModel student) {
         repo.save(student); // JPA will perform update if ID is present
-        return "redirect:/students/view";
+        return "redirect:/views/students/view";
     }
 
     // ✅ DELETE STUDENT
     @GetMapping("/students/delete/{id}")
     public String deleteStudent(@PathVariable int id) {
         repo.deleteById(id);
-        return "redirect:/students/view";
+        return "redirect:/views/students/view";
     }
   
 }
